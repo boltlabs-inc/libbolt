@@ -15,7 +15,7 @@ rand_core = "0.4.0"
 rand_xorshift = "0.1"
 ff = { git = "https://github.com/boltlabs-inc/ff", branch = "master" }
 pairing = { git = "https://github.com/boltlabs-inc/pairing", branch = "master", features = ["serde"] }
-bincode = "0.6.1"
+bincode = "1.1.4"
 sodiumoxide = "0.0.16"
 libc = "*"
 serde = { version = "1.0", features = ["derive"] }
@@ -27,7 +27,7 @@ secp256k1 = { version = "0.15.0", features = ["rand", "serde"] }
 sha2 = { version = "0.8", default-features = false }
 
 [dev-dependencies.bincode]
-version = "~0.6.0"
+version = "~1.1.4"
 default-features = false
 features = ["rustc-serialize"]
 
