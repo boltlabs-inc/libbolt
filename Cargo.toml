@@ -11,7 +11,7 @@ license = "MIT License"
 
 [dependencies]
 rand = "0.6"
-rand_core = "0.4.0"
+rand_core = "0.5.1"
 ff_bl = { git = "https://github.com/boltlabs-inc/ff", branch = "master" }
 pairing_bl = { git = "https://github.com/boltlabs-inc/pairing", branch = "master", features = ["serde"] }
 libc = "*"
