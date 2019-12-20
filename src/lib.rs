@@ -505,8 +505,9 @@ pub mod bidirectional {
     }
 }
 
-pub mod wtp_utils {
-    // Useful routines that simplify the Bolt WTP implementation for Zcash
+/* Transparent Zcash Extensions (TZE) */
+pub mod tze_utils {
+    // Useful routines that simplify the Bolt TZE implementation
     use pairing::bls12_381::Bls12;
     use ::{util, BoltResult};
     use cl;
@@ -530,7 +531,7 @@ pub mod wtp_utils {
         return secp256k1::Signature::from_der(sig_bytes).unwrap();
     }
 
-    pub fn reconstruct_close_wallet_bls12(channel_token: &ChannelToken<Bls12>, wpk: &secp256k1::PublicKey, cust_bal: u32, merch_bal: u32) -> Wallet<Bls12> {
+    pub fn reconstruct_close_wallet_bls12(channel_token: &ChannelToken<Bls12>, wpk: &secp256k1::PublicKey, cust_bal: u64, merch_bal: u64) -> Wallet<Bls12> {
         let channelId = channel_token.compute_channel_id();
         let wpk_h = util::hash_pubkey_to_fr::<Bls12>(&wpk);
         let close = util::hash_to_fr::<Bls12>(String::from("close").into_bytes());
@@ -1095,7 +1096,7 @@ mod tests {
         71dc14f3b1d6a646ed7cc0ca9417d8bde6efc1ac300d8e28f";
         let ser_channel_token = hex::decode(_ser_channel_token).unwrap();
 
-        let option_ct = wtp_utils::reconstruct_channel_token_bls12(&ser_channel_token);
+        let option_ct = tze_utils::reconstruct_channel_token_bls12(&ser_channel_token);
         let channel_token = match option_ct {
             Ok(n) => n.unwrap(),
             Err(e) => panic!("Error reconstructing compact rep of channel token: {}", e)
@@ -1117,7 +1118,7 @@ mod tests {
                               aee9eafd51cfdb0dc567a5d152bc37861727e85088b417cf3ff57c108d0156eee56aff810f1e5f9e76cd6a3590d6db5e";
         let ser_signature = hex::decode(_ser_signature).unwrap();
 
-        let option_sig = wtp_utils::reconstruct_signature_bls12(&ser_signature);
+        let option_sig = tze_utils::reconstruct_signature_bls12(&ser_signature);
 
         let sig = match option_sig {
             Ok(n) => n.unwrap(),
@@ -1130,7 +1131,7 @@ mod tests {
         let _ser_sig = "3044022064650285b55624f1f64b2c75e76589fa4b1033dabaa7ff50ff026e1dc038279202204ca696e0a829687c87171e8e5dab17069be248ff2595fd9607f3346dadcb579f";
         let ser_sig = hex::decode(_ser_sig).unwrap();
 
-        let signature = wtp_utils::reconstruct_secp_signature(ser_sig.as_slice());
+        let signature = tze_utils::reconstruct_secp_signature(ser_sig.as_slice());
         assert_eq!(format!("{:?}", signature), _ser_sig);
 
         let sk = hex::decode("81361b9bc2f67524dcc59b980dc8b06aadb77db54f6968d2af76ecdb612e07e4").unwrap();
@@ -1142,7 +1143,7 @@ mod tests {
 
         let mut seckey = [0u8; 32];
         seckey.copy_from_slice(sk.as_slice());
-        let sig = wtp_utils::wtp_generate_secp_signature(&seckey, &hash);
+        let sig = tze_utils::wtp_generate_secp_signature(&seckey, &hash);
     }
 
     #[test]
@@ -1151,7 +1152,7 @@ mod tests {
         let address_slice = hex::decode("0a1111111111111111111111111111111111111111111111111111111111111111").unwrap();
         address.copy_from_slice(address_slice.as_slice());
 
-        let channelClose = wtp_utils::reconstruct_secp_channel_close_m(&address,
+        let channelClose = tze_utils::reconstruct_secp_channel_close_m(&address,
                                                                        &hex::decode("3044022041932b376fe2c5e9e9ad0a3804e2290c3bc40617ea4f7b913be858dbcc3760b50220429d6eb1aabbd4135db4e0776c0b768af844b0af44f2f8f9da5a65e8541b4e9f").unwrap(),
                                                                        &hex::decode("3045022100e76653c5f8cb4c2f39efc7c5450d4f68ef3d84d482305534f5dfc310095a3124022003c4651ce1305cffe5e483ab99925cc4c9c5df2b5449bb18a51d52b21d789716").unwrap());
 
