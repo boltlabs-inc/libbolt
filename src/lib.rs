@@ -596,7 +596,7 @@ pub mod tze_utils {
             let str_cl_y = ser_cl_y.as_bytes();
             Y.extend(str_cl_y);
         }
-        let cl_pk= cl::PublicKey::<Bls12>::from_slice(&X, &Y.as_slice(), str_cl_x.len(), num_y_elems);
+        let cl_pk = cl::PublicKey::<Bls12>::from_slice(&X, &Y.as_slice(), str_cl_x.len(), num_y_elems);
 
         cur_index = end_index;
         end_index += BLS12_381_G1_LEN;
@@ -633,7 +633,7 @@ pub mod tze_utils {
     ///
     /// Used in open-channel WTP for validating that a close_token is a valid signature
     ///
-    pub fn wtp_verify_cust_close_message(channel_token: &ChannelToken<Bls12>, wpk: &secp256k1::PublicKey,
+    pub fn verify_cust_close_message(channel_token: &ChannelToken<Bls12>, wpk: &secp256k1::PublicKey,
                                          close_msg: &Wallet<Bls12>, close_token: &cl::Signature<Bls12>) -> bool {
         // close_msg => <pkc> || <wpk> || <balance-cust> || <balance-merch> || CLOSE
         // close_token = regular CL signature on close_msg
@@ -649,7 +649,7 @@ pub mod tze_utils {
         return cid_thesame && wpk_thesame && channel_token.cl_pk_m.verify(&channel_token.mpk, &close_msg.as_fr_vec(), &close_token);
     }
 
-    pub fn wtp_generate_secp_signature(seckey: &[u8; 32], msg: &[u8; 32]) -> Vec<u8> {
+    pub fn generate_secp_signature(seckey: &[u8; 32], msg: &[u8; 32]) -> Vec<u8> {
         let secp = secp256k1::Secp256k1::signing_only();
 
         let msg = secp256k1::Message::from_slice(msg).unwrap();
@@ -662,7 +662,7 @@ pub mod tze_utils {
         return ser_sig.to_vec();
     }
 
-    pub fn wtp_verify_secp_signature(pubkey: &secp256k1::PublicKey, hash: &Vec<u8>, sig: &secp256k1::Signature) -> bool {
+    pub fn verify_secp_signature(pubkey: &secp256k1::PublicKey, hash: &Vec<u8>, sig: &secp256k1::Signature) -> bool {
         let secp = secp256k1::Secp256k1::verification_only();
         let msg = secp256k1::Message::from_slice(hash.as_slice()).unwrap();
 
