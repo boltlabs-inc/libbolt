@@ -21,7 +21,7 @@ serde_bytes = "0.11.2"
 time = "0.1"
 secp256k1 = { version = "0.17.1", features = ["serde"] }
 sha2 = { version = "0.8", default-features = false }
-hex = "0.3.2"
+hex = "0.4.2"
 
 [lib]
 crate-type = ["lib", "cdylib", "staticlib"]
