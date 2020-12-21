@@ -10,7 +10,7 @@ repository = "https://github.com/ZcashFoundation/libbolt"
 license = "MIT License"
 
 [dependencies]
-rand = "0.7"
+rand = "0.8"
 ff_bl = { git = "https://github.com/boltlabs-inc/ff", branch = "master" }
 pairing_bl = { git = "https://github.com/boltlabs-inc/pairing", branch = "master", features = ["serde"] }
 libc = "*"
