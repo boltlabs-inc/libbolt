@@ -19,7 +19,7 @@ serde_json = "1.0"
 serde_with = "1.0"
 serde_bytes = "0.11.2"
 time = "0.1"
-secp256k1 = { version = "0.17.1", features = ["serde"] }
+secp256k1 = { version = "0.20.1", features = ["serde"] }
 sha2 = { version = "0.8", default-features = false }
 hex = "0.3.2"
 
